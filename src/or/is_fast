@@ -1,0 +1,306 @@
+directory.c:1669:      rs->last_dir_503_at = now;
+directory.c:3525:    dls = &rs->dl_status;
+microdesc.c:409:            if (tor_memeq(node->rs->descriptor_digest,
+microdesc.c:760:    if (microdesc_cache_lookup_by_digest256(cache, rs->descriptor_digest))
+microdesc.c:763:        !download_status_is_ready(&rs->dl_status, now,
+microdesc.c:766:    if (skip && digestmap_get(skip, rs->descriptor_digest))
+microdesc.c:768:    if (tor_mem_is_zero(rs->descriptor_digest, DIGEST256_LEN))
+microdesc.c:773:    smartlist_add(result, rs->descriptor_digest);
+microdesc.c:838:    md = microdesc_cache_lookup_by_digest256(cache, rs->descriptor_digest);
+dirserv.c:322:  res = dirserv_get_status_impl(rs->identity_digest, rs->nickname,
+dirserv.c:323:                                rs->addr, rs->or_port,
+dirserv.c:1964:  format_iso_time(published, rs->published_on);
+dirserv.c:1965:  digest_to_base64(identity64, rs->identity_digest);
+dirserv.c:1966:  digest_to_base64(digest64, rs->descriptor_digest);
+dirserv.c:1971:                   rs->nickname,
+dirserv.c:1976:                   fmt_addr32(rs->addr),
+dirserv.c:1977:                   (int)rs->or_port,
+dirserv.c:1978:                   (int)rs->dir_port);
+dirserv.c:1990:  if (!tor_addr_is_null(&rs->ipv6_addr)) {
+dirserv.c:1992:                           fmt_addrport(&rs->ipv6_addr, rs->ipv6_orport));
+dirserv.c:2001:                   rs->is_authority?" Authority":"",
+dirserv.c:2002:                   rs->is_bad_directory?" BadDirectory":"",
+dirserv.c:2003:                   rs->is_bad_exit?" BadExit":"",
+dirserv.c:2004:                   rs->is_exit?" Exit":"",
+dirserv.c:2005:                   rs->is_fast?" Fast":"",
+dirserv.c:2006:                   rs->is_possible_guard?" Guard":"",
+dirserv.c:2007:                   rs->is_hs_dir?" HSDir":"",
+dirserv.c:2008:                   rs->is_named?" Named":"",
+dirserv.c:2009:                   rs->is_flagged_running?" Running":"",
+dirserv.c:2010:                   rs->is_stable?" Stable":"",
+dirserv.c:2011:                   rs->is_unnamed?" Unnamed":"",
+dirserv.c:2012:                   (rs->dir_port!=0)?" V2Dir":"",
+dirserv.c:2013:                   rs->is_valid?" Valid":"");
+dirserv.c:2022:    const routerinfo_t* desc = router_get_by_id_digest(rs->identity_digest);
+dirserv.c:2033:        base16_encode(id, sizeof(id), rs->identity_digest, DIGEST_LEN);
+dirserv.c:2034:        base16_encode(dd, sizeof(dd), rs->descriptor_digest, DIGEST_LEN);
+dirserv.c:2046:            rs->descriptor_digest,
+dirserv.c:2054:        base16_encode(rs_d, sizeof(rs_d), rs->descriptor_digest, DIGEST_LEN);
+dirserv.c:2055:        base16_encode(id, sizeof(id), rs->identity_digest, DIGEST_LEN);
+dirserv.c:2062:              rs->descriptor_digest,
+dirserv.c:2067:    if (format == NS_CONTROL_PORT && rs->has_bandwidth) {
+dirserv.c:2068:      bw_kb = rs->bandwidth_kb;
+dirserv.c:2076:    if (format == NS_V3_VOTE && vrs && vrs->has_measured_bw) {
+dirserv.c:2078:                       " Measured=%d", vrs->measured_bw_kb);
+dirserv.c:2291:  rs->is_authority =
+dirserv.c:2295:  rs->is_exit = node->is_exit;
+dirserv.c:2296:  rs->is_stable = node->is_stable =
+dirserv.c:2299:  rs->is_fast = node->is_fast =
+dirserv.c:2302:  rs->is_flagged_running = node->is_running; /* computed above */
+dirserv.c:2307:    rs->is_named = (naming && (name_status & FP_NAMED)) ? 1 : 0;
+dirserv.c:2308:    rs->is_unnamed = (naming && (name_status & FP_UNNAMED)) ? 1 : 0;
+dirserv.c:2310:  rs->is_valid = node->is_valid;
+dirserv.c:2322:    rs->is_possible_guard = (wfu >= guard_wfu && tk >= guard_tk) ? 1 : 0;
+dirserv.c:2324:    rs->is_possible_guard = 0;
+dirserv.c:2329:    rs->is_possible_guard = 1;
+dirserv.c:2332:  rs->is_bad_directory = listbaddirs && node->is_bad_directory;
+dirserv.c:2333:  rs->is_bad_exit = listbadexits && node->is_bad_exit;
+dirserv.c:2335:  rs->is_hs_dir = vote_on_hsdirs && node->is_hs_dir;
+dirserv.c:2338:    rs->is_named = rs->is_unnamed = 0;
+dirserv.c:2340:  rs->published_on = ri->cache_info.published_on;
+dirserv.c:2341:  memcpy(rs->identity_digest, node->identity, DIGEST_LEN);
+dirserv.c:2342:  memcpy(rs->descriptor_digest, ri->cache_info.signed_descriptor_digest,
+dirserv.c:2344:  rs->addr = ri->addr;
+dirserv.c:2345:  strlcpy(rs->nickname, ri->nickname, sizeof(rs->nickname));
+dirserv.c:2346:  rs->or_port = ri->or_port;
+dirserv.c:2347:  rs->dir_port = ri->dir_port;
+dirserv.c:2353:    tor_addr_copy(&rs->ipv6_addr, &ri->ipv6_addr);
+dirserv.c:2354:    rs->ipv6_orport = ri->ipv6_orport;
+dirserv.c:2365:  rs->is_authority = rs->is_exit = rs->is_stable = rs->is_fast =
+dirserv.c:2366:    rs->is_flagged_running = rs->is_named = rs->is_valid =
+dirserv.c:2367:    rs->is_hs_dir = rs->is_possible_guard = rs->is_bad_exit =
+dirserv.c:2368:    rs->is_bad_directory = 0;
+dirserv.c:2472:    rs->has_measured_bw = 1;
+dirserv.c:2473:    rs->measured_bw_kb = (uint32_t)parsed_line->bw_kb;
+dirserv.c:2658:      rs = &vrs->status;
+dirserv.c:2667:        rs->is_flagged_running = 0;
+dirserv.c:2669:      vrs->version = version_from_platform(ri->platform);
+dirserv.c:2670:      vrs->microdesc = dirvote_format_all_microdesc_vote_lines(ri, now,
+routerset.c:304:  tor_addr_from_ipv4h(&addr, rs->addr);
+routerset.c:307:                            rs->or_port,
+routerset.c:308:                            rs->nickname,
+routerset.c:309:                            rs->identity_digest,
+circuituse.c:2118:        exitnode->rs->version_supports_optimistic_data)
+Binary file libtor.a matches
+Binary file dirserv.o matches
+config.c:5629:    for (; listenaddrs; listenaddrs = listenaddrs->next) {
+config.c:5632:      if (tor_addr_port_lookup(listenaddrs->value, &addr, &port) < 0) {
+config.c:5634:                 portname, listenaddrs->value);
+networkstatus.c:193:  tor_free(rs->version);
+networkstatus.c:194:  tor_free(rs->status.exitsummary);
+networkstatus.c:195:  for (h = rs->microdesc; h; h = next) {
+networkstatus.c:209:  tor_free(rs->exitsummary);
+networkstatus.c:549:  return tor_memcmp(key, rs->identity_digest, DIGEST_LEN);
+networkstatus.c:560:  return tor_memcmp(key, vrs->status.identity_digest, DIGEST_LEN);
+networkstatus.c:608:       digestmap_set(m, rs->descriptor_digest, rs);
+networkstatus.c:635:    return &rs->dl_status;
+networkstatus.c:1531:      if (rs->is_named) {
+networkstatus.c:1532:        strmap_set_lc(named_server_map, rs->nickname,
+networkstatus.c:1533:                      tor_memdup(rs->identity_digest, DIGEST_LEN));
+networkstatus.c:1535:      if (rs->is_unnamed) {
+networkstatus.c:1536:        strmap_set_lc(unnamed_server_map, rs->nickname, (void*)1);
+networkstatus.c:1558:                         tor_memcmp(rs->identity_digest,
+networkstatus.c:1564:                rs->descriptor_digest, DIGEST_LEN)) {
+networkstatus.c:1580:      download_status_reset(&rs->dl_status);
+networkstatus.c:1827:  if (!rs->is_flagged_running && !options->FetchUselessDescriptors) {
+networkstatus.c:1832:  if (rs->published_on + options->TestingEstimatedDescriptorPropagationTime
+networkstatus.c:1837:  if (rs->published_on + OLD_ROUTER_DESC_MAX_AGE < now) {
+circuitbuild.c.bak:833:       (node_prev->rs && node_prev->rs->version_supports_extend2_cells))) {
+circuitbuild.c.bak:2236:            node->ri ? node->ri->nickname : node->rs->nickname);
+circuitbuild.c.bak:2246:    return extend_info_new(node->rs->nickname,
+router.c.bak:2045:    else if (rs->published_on < slow_cutoff)
+router.c.bak:2892:    nickname = node->rs->nickname;
+router.c.bak:2893:    is_named = node->rs->is_named;
+router.c.bak:2894:    addr32h = node->rs->addr;
+router.c.bak:2919:                                 rs->identity_digest,
+router.c.bak:2920:                                 rs->is_named,
+router.c.bak:2921:                                 rs->nickname,
+router.c.bak:2923:                                 rs->addr);
+nodelist.c:190:  node = node_get_mutable_by_id(rs->identity_digest);
+nodelist.c:220:    node_t *node = node_get_or_create(rs->identity_digest);
+nodelist.c:224:          tor_memneq(node->md->digest,rs->descriptor_digest,DIGEST256_LEN)) {
+nodelist.c:228:                                                       rs->descriptor_digest);
+nodelist.c:238:      node->is_valid = rs->is_valid;
+nodelist.c:239:      node->is_running = rs->is_flagged_running;
+nodelist.c:240:      node->is_fast = rs->is_fast;
+nodelist.c:241:      node->is_stable = rs->is_stable;
+nodelist.c:242:      node->is_possible_guard = rs->is_possible_guard;
+nodelist.c:243:      node->is_exit = rs->is_exit;
+nodelist.c:244:      node->is_bad_directory = rs->is_bad_directory;
+nodelist.c:245:      node->is_bad_exit = rs->is_bad_exit;
+nodelist.c:246:      node->is_hs_dir = rs->is_hs_dir;
+nodelist.c:249:          (tor_addr_is_null(&rs->ipv6_addr) == 0 ||
+nodelist.c:444:      const node_t *node = node_get_by_id(rs->identity_digest);
+nodelist.c:446:      tor_assert(fast_memeq(rs->identity_digest, node->identity, DIGEST_LEN));
+nodelist.c:453:          microdesc_cache_lookup_by_digest256(NULL, rs->descriptor_digest);
+nodelist.c:605:    return node->rs->nickname;
+nodelist.c:633:    return node->rs->dir_port != 0;
+nodelist.c:770:      tor_addr_from_ipv4h(&ap->addr, node->rs->addr);
+nodelist.c:771:      ap->port = node->rs->or_port;
+nodelist.c:796:    return node->rs->addr;
+nodelist.c:810:    tor_addr_from_ipv4h(&addr, node->rs->addr);
+nodelist.c:890:      return !tor_addr_is_null(&node->rs->ipv6_addr);
+nodelist.c:912:    if (node->rs->addr == 0 || node->rs->or_port == 0)
+nodelist.c:914:    tor_addr_from_ipv4h(&ap_out->addr, node->rs->addr);
+nodelist.c:915:    ap_out->port = node->rs->or_port;
+nodelist.c:965:    tor_addr_copy(&ap_out->addr, &node->rs->ipv6_addr);
+nodelist.c:966:    ap_out->port = node->rs->ipv6_orport;
+nodelist.c:991:    tor_addr_from_ipv4h(&addr, node->rs->addr);
+nodelist.c:1335:       const node_t *node = node_get_by_id(rs->identity_digest);
+nodelist.c:1339:       if (exit_only && ! rs->is_exit)
+nodelist.c:1344:         const char * const digest = rs->descriptor_digest;
+nodelist.c:1391:        if (node->rs && node->rs->is_possible_guard)
+routerlist.c:1460:        !node->rs->version_supports_microdesc_cache)
+routerlist.c:1472:    tor_addr_from_ipv4h(&addr, node->rs->addr);
+routerlist.c:1684:        rs->last_dir_503_at = 0;
+routerlist.c:2051:      if (!node->rs->has_bandwidth) {
+routerlist.c:2060:      this_bw = kb_to_bytes(node->rs->bandwidth_kb);
+routerlist.c:2203:      if (node->rs->has_bandwidth) {
+routerlist.c:2204:        this_bw = kb_to_bytes(node->rs->bandwidth_kb);
+routerlist.c:3399:    if (rs && tor_memeq(rs->descriptor_digest,
+routerlist.c:3662:        if (rs->published_on >= cutoff)
+routerlist.c:3663:          digestset_add(retain, rs->descriptor_digest));
+routerlist.c:3972:    if (rs && tor_memeq(rs->descriptor_digest,
+routerlist.c:4510:      if ((sd = router_get_by_descriptor_digest(rs->descriptor_digest))) {
+routerlist.c:4513:        if (!(ri = router_get_by_id_digest(rs->identity_digest)) ||
+routerlist.c:4525:      if (digestmap_get(map, rs->descriptor_digest)) {
+routerlist.c:4529:      if (!download_status_is_ready(&rs->dl_status, now,
+routerlist.c:4547:        oldrouter = router_get_by_id_digest(rs->identity_digest);
+routerlist.c:4548:        format_iso_time(time_bufnew, rs->published_on);
+routerlist.c:4557:      smartlist_add(downloadable, rs->descriptor_digest);
+routerlist.c:5121:  last_id = last_rs->identity_digest;
+entrynodes.c:143:      node->rs->version_supports_microdesc_cache;
+entrynodes.c:369:                            node->rs->version_supports_microdesc_cache;
+entrynodes.c:384:    node = node_get_by_id(rs->identity_digest);
+entrynodes.c:403:                        node->rs->version_supports_microdesc_cache;
+entrynodes.c:963:  if (node->rs && node->rs->version_supports_microdesc_cache)
+entrynodes.c:2164:    tor_addr_from_ipv4h(&addr, rs->addr);
+entrynodes.c:2167:        bridge->port == rs->or_port) {
+entrynodes.c:2170:      rs->addr = tor_addr_to_ipv4h(&bridge->addr);
+entrynodes.c:2171:      rs->or_port = bridge->port;
+entrynodes.c:2175:               rs->nickname, fmt_addrport(&bridge->addr, rs->or_port));
+circuitbuild.c:833:       (node_prev->rs && node_prev->rs->version_supports_extend2_cells))) {
+circuitbuild.c:2236:            node->ri ? node->ri->nickname : node->rs->nickname);
+circuitbuild.c:2246:    return extend_info_new(node->rs->nickname,
+cpuworker.c.bak:176:  num_cpuworkers--;
+cpuworker.c.bak:388:    num_cpuworkers--;
+cpuworker.c.bak:636:      num_cpuworkers--;
+router.c:2045:    else if (rs->published_on < slow_cutoff)
+router.c:2892:    nickname = node->rs->nickname;
+router.c:2893:    is_named = node->rs->is_named;
+router.c:2894:    addr32h = node->rs->addr;
+router.c:2919:                                 rs->identity_digest,
+router.c:2920:                                 rs->is_named,
+router.c:2921:                                 rs->nickname,
+router.c:2923:                                 rs->addr);
+policies.c:329:    tor_addr_from_ipv4h(&addr, node->rs->addr);
+policies.c:330:    return fascist_firewall_allows_address_or(&addr, node->rs->or_port);
+Binary file nodelist.o matches
+Binary file dirvote.o matches
+dirvote.c:172:    rsf = routerstatus_format_entry(&vrs->status,
+dirvote.c:173:                                    vrs->version, NS_V3_VOTE, vrs);
+dirvote.c:177:    for (h = vrs->microdesc; h; h = h->next) {
+dirvote.c:440:          !tor_addr_is_null(&rs->status.ipv6_addr)
+dirvote.c:441:          && rs->status.ipv6_orport) {
+dirvote.c:442:        smartlist_add(alt_orports, tor_addr_port_new(&rs->status.ipv6_addr,
+dirvote.c:443:                                                     rs->status.ipv6_orport));
+dirvote.c:1634:          if ((rs->flags & nf) != 0) {
+dirvote.c:1635:            const char *d = strmap_get_lc(name_to_id_map, rs->status.nickname);
+dirvote.c:1638:              strmap_set_lc(name_to_id_map, rs->status.nickname,
+dirvote.c:1639:                            rs->status.identity_digest);
+dirvote.c:1641:                fast_memcmp(d, rs->status.identity_digest, DIGEST_LEN)) {
+dirvote.c:1643:              strmap_set_lc(name_to_id_map, rs->status.nickname, conflict);
+dirvote.c:1658:          if ((rs->flags & uf) != 0) {
+dirvote.c:1659:            const char *d = strmap_get_lc(name_to_id_map, rs->status.nickname);
+dirvote.c:1664:              strmap_set_lc(name_to_id_map, rs->status.nickname, unknown);
+dirvote.c:1665:            } else if (fast_memeq(d, rs->status.identity_digest, DIGEST_LEN)) {
+dirvote.c:1667:              strmap_set_lc(name_to_id_map, rs->status.nickname, conflict);
+dirvote.c:1706:              fast_memcmp(rs->status.identity_digest,
+dirvote.c:1708:            lowest_id = rs->status.identity_digest;
+dirvote.c:1726:        if (fast_memcmp(rs->status.identity_digest, lowest_id, DIGEST_LEN))
+dirvote.c:1735:        if (rs->version && rs->version[0])
+dirvote.c:1736:          smartlist_add(versions, rs->version);
+dirvote.c:1740:          if (rs->flags & (U64_LITERAL(1) << i))
+dirvote.c:1744:            (rs->flags & (U64_LITERAL(1) << named_flag[v_sl_idx]))) {
+dirvote.c:1745:          if (chosen_name && strcmp(chosen_name, rs->status.nickname)) {
+dirvote.c:1747:                       chosen_name, rs->status.nickname);
+dirvote.c:1750:          chosen_name = rs->status.nickname;
+dirvote.c:1754:        if (rs->has_measured_bw)
+dirvote.c:1755:          measured_bws_kb[num_mbws++] = rs->measured_bw_kb;
+dirvote.c:1757:        if (rs->status.has_bandwidth)
+dirvote.c:1758:          bandwidths_kb[num_bandwidths++] = rs->status.bandwidth_kb;
+dirvote.c:1773:      tor_assert(fast_memeq(lowest_id, rs->status.identity_digest,DIGEST_LEN));
+dirvote.c:1775:      memcpy(rs_out.descriptor_digest, rs->status.descriptor_digest,
+dirvote.c:1777:      rs_out.addr = rs->status.addr;
+dirvote.c:1778:      rs_out.published_on = rs->status.published_on;
+dirvote.c:1779:      rs_out.dir_port = rs->status.dir_port;
+dirvote.c:1780:      rs_out.or_port = rs->status.or_port;
+dirvote.c:1791:        strlcpy(rs_out.nickname, rs->status.nickname, sizeof(rs_out.nickname));
+dirvote.c:3763:  for (h = vrs->microdesc; h; h = h->next) {
+cpuworker.c:176:  num_cpuworkers--;
+cpuworker.c:388:    num_cpuworkers--;
+cpuworker.c:633:      num_cpuworkers--;
+routerparse.c:1814:    rs = &vote_rs->status;
+routerparse.c:1825:  strlcpy(rs->nickname, tok->args[0], sizeof(rs->nickname));
+routerparse.c:1827:  if (digest_from_base64(rs->identity_digest, tok->args[1])) {
+routerparse.c:1834:    if (digest_from_base64(rs->descriptor_digest, tok->args[2])) {
+routerparse.c:1843:      parse_iso_time(timebuf, &rs->published_on)<0) {
+routerparse.c:1855:  rs->addr = ntohl(in.s_addr);
+routerparse.c:1857:  rs->or_port = (uint16_t) tor_parse_long(tok->args[6+offset],
+routerparse.c:1859:  rs->dir_port = (uint16_t) tor_parse_long(tok->args[7+offset],
+routerparse.c:1865:      find_single_ipv6_orport(a_lines, &rs->ipv6_addr, &rs->ipv6_orport);
+routerparse.c:1873:    vote_rs->flags = 0;
+routerparse.c:1877:        vote_rs->flags |= (U64_LITERAL(1)<<p);
+routerparse.c:1888:        rs->is_exit = 1;
+routerparse.c:1890:        rs->is_stable = 1;
+routerparse.c:1892:        rs->is_fast = 1;
+routerparse.c:1894:        rs->is_flagged_running = 1;
+routerparse.c:1896:        rs->is_named = 1;
+routerparse.c:1898:        rs->is_valid = 1;
+routerparse.c:1900:        rs->is_possible_guard = 1;
+routerparse.c:1902:        rs->is_bad_exit = 1;
+routerparse.c:1904:        rs->is_bad_directory = 1;
+routerparse.c:1906:        rs->is_authority = 1;
+routerparse.c:1910:        rs->is_unnamed = 1;
+routerparse.c:1912:        rs->is_hs_dir = 1;
+routerparse.c:1918:    rs->version_known = 1;
+routerparse.c:1920:      rs->version_supports_microdesc_cache = 1;
+routerparse.c:1921:      rs->version_supports_optimistic_data = 1;
+routerparse.c:1923:      rs->version_supports_microdesc_cache =
+routerparse.c:1925:      rs->version_supports_optimistic_data =
+routerparse.c:1927:      rs->version_supports_extend2_cells =
+routerparse.c:1931:      vote_rs->version = tor_strdup(tok->args[0]);
+routerparse.c:1941:        rs->bandwidth_kb =
+routerparse.c:1949:        rs->has_bandwidth = 1;
+routerparse.c:1952:        vote_rs->measured_bw_kb =
+routerparse.c:1960:        vote_rs->has_measured_bw = 1;
+routerparse.c:1963:        rs->bw_is_unmeasured = 1;
+routerparse.c:1981:    rs->exitsummary = tor_strdup(tok->args[0]);
+routerparse.c:1982:    rs->has_exitsummary = 1;
+routerparse.c:1990:        line->next = vote_rs->microdesc;
+routerparse.c:1992:        vote_rs->microdesc = line;
+routerparse.c:1999:      if (digest256_from_base64(rs->descriptor_digest, tok->args[0])) {
+routerparse.c:2007:               rs->nickname, hex_str(rs->identity_digest, DIGEST_LEN),
+routerparse.c:2008:               fmt_addr32(rs->addr), rs->or_port);
+routerparse.c:2012:  if (!strcasecmp(rs->nickname, UNNAMED_ROUTER_NICKNAME))
+routerparse.c:2013:    rs->is_named = 0;
+routerparse.c:2132:      is_exit = rs->is_exit && !rs->is_bad_exit;
+routerparse.c:2134:      is_exit = rs->is_exit;
+routerparse.c:2136:    if (rs->has_bandwidth) {
+routerparse.c:2137:      T += rs->bandwidth_kb;
+routerparse.c:2138:      if (is_exit && rs->is_possible_guard) {
+routerparse.c:2139:        D += rs->bandwidth_kb;
+routerparse.c:2140:        Gtotal += Wgd*rs->bandwidth_kb;
+routerparse.c:2141:        Mtotal += Wmd*rs->bandwidth_kb;
+routerparse.c:2142:        Etotal += Wed*rs->bandwidth_kb;
+routerparse.c:2144:        E += rs->bandwidth_kb;
+routerparse.c:2145:        Mtotal += Wme*rs->bandwidth_kb;
+routerparse.c:2146:        Etotal += Wee*rs->bandwidth_kb;
+routerparse.c:2147:      } else if (rs->is_possible_guard) {
+routerparse.c:2148:        G += rs->bandwidth_kb;
+routerparse.c:2149:        Gtotal += Wgg*rs->bandwidth_kb;
+routerparse.c:2150:        Mtotal += Wmg*rs->bandwidth_kb;
+routerparse.c:2152:        M += rs->bandwidth_kb;
+routerparse.c:2153:        Mtotal += Wmm*rs->bandwidth_kb;
+routerparse.c:2778:        tor_free(rs->version);
+Binary file tor matches
